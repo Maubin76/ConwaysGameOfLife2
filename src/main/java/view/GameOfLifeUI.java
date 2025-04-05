@@ -4,8 +4,12 @@ import controller.GameController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -51,23 +55,36 @@ public class GameOfLifeUI extends Application {
             }
         }
 
-        Scene scene = new Scene(gridPane);
+        // Create a Start button
+        Button startButton = new Button("Start");
+        startButton.setOnAction(e -> startGameLoop());
+
+        // Center the button using an HBox
+        HBox buttonContainer = new HBox(startButton);
+        buttonContainer.setAlignment(Pos.CENTER);
+
+        // Layout with the grid and button
+        BorderPane root = new BorderPane();
+        root.setCenter(gridPane);
+        root.setBottom(buttonContainer);
+
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Conway's Game of Life");
         primaryStage.show();
-
-        startGameLoop();
     }
 
     /**
      * Starts the game loop, which updates the grid at regular intervals.
      */
     private void startGameLoop() {
-        timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> {
-            controller.nextGeneration();
-            updateGrid();
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        if (timeline == null) {
+            timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> {
+                controller.nextGeneration();
+                updateGrid();
+            }));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+        }
         timeline.play();
     }
 
