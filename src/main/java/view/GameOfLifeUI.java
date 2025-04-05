@@ -11,6 +11,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Represents the graphical user interface for Conway's Game of Life.
+ * Handles user interactions and visualizes the game grid.
+ */
 public class GameOfLifeUI extends Application {
 
     private static final int CELL_SIZE = 20;
@@ -27,6 +31,7 @@ public class GameOfLifeUI extends Application {
         GridPane gridPane = new GridPane();
         cellRects = new Rectangle[ROWS][COLS];
 
+        // Initialize the grid with clickable rectangles
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 Rectangle rect = new Rectangle(CELL_SIZE, CELL_SIZE);
@@ -54,6 +59,9 @@ public class GameOfLifeUI extends Application {
         startGameLoop();
     }
 
+    /**
+     * Starts the game loop, which updates the grid at regular intervals.
+     */
     private void startGameLoop() {
         timeline = new Timeline(new KeyFrame(Duration.millis(300), e -> {
             controller.nextGeneration();
@@ -63,6 +71,9 @@ public class GameOfLifeUI extends Application {
         timeline.play();
     }
 
+    /**
+     * Updates the visual representation of the grid based on the current state.
+     */
     private void updateGrid() {
         var grid = controller.getGrid();
         for (int row = 0; row < ROWS; row++) {

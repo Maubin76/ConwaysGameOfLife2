@@ -2,19 +2,20 @@ package controller;
 
 import model.Cell;
 
+/**
+ * Manages the game logic and state of the grid for Conway's Game of Life.
+ * Handles grid initialization, cell state toggling, and generation updates.
+ */
 public class GameController {
-    /*
-     * This class manages the game logic and the state of the grid.
-     * It handles the rules of the game and updates the grid accordingly.
-     * The grid is represented as a 2D array of Cell objects.
-     * Each Cell object has a boolean state indicating whether it is alive or dead.
-     * The GameController class is responsible for initializing the grid, toggling cell states, 
-     * and calculating the next generation of cells based on the rules of Conway's Game of Life.
-     */
     private final int rows;
     private final int cols;
     private Cell[][] grid;
 
+    /**
+     * Constructs a GameController with the specified grid dimensions.
+     * @param rows Number of rows in the grid.
+     * @param cols Number of columns in the grid.
+     */
     public GameController(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -22,6 +23,9 @@ public class GameController {
         initializeGrid();
     }
 
+    /**
+     * Initializes the grid with all cells set to dead.
+     */
     private void initializeGrid() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -30,16 +34,28 @@ public class GameController {
         }
     }
 
+    /**
+     * Retrieves the current grid.
+     * @return A 2D array of Cell objects representing the grid.
+     */
     public Cell[][] getGrid() {
         return grid;
     }
 
+    /**
+     * Toggles the state of a cell at the specified position.
+     * @param row Row index of the cell.
+     * @param col Column index of the cell.
+     */
     public void toggleCell(int row, int col) {
         if (isValid(row, col)) {
             grid[row][col].toggle();
         }
     }
 
+    /**
+     * Advances the grid to the next generation based on the rules of the game.
+     */
     public void nextGeneration() {
         Cell[][] nextGen = new Cell[rows][cols];
 
@@ -61,6 +77,12 @@ public class GameController {
         grid = nextGen;
     }
 
+    /**
+     * Counts the number of live neighbors for a cell at the specified position.
+     * @param row Row index of the cell.
+     * @param col Column index of the cell.
+     * @return The number of live neighbors.
+     */
     private int countLiveNeighbors(int row, int col) {
         int count = 0;
 
@@ -80,14 +102,28 @@ public class GameController {
         return count;
     }
 
+    /**
+     * Checks if the specified position is within the bounds of the grid.
+     * @param row Row index to check.
+     * @param col Column index to check.
+     * @return True if the position is valid, false otherwise.
+     */
     private boolean isValid(int row, int col) {
         return row >= 0 && row < rows && col >= 0 && col < cols;
     }
 
+    /**
+     * Retrieves the number of rows in the grid.
+     * @return The number of rows.
+     */
     public int getRows() {
         return rows;
     }
 
+    /**
+     * Retrieves the number of columns in the grid.
+     * @return The number of columns.
+     */
     public int getCols() {
         return cols;
     }
