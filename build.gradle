@@ -1,0 +1,46 @@
+plugins {
+    id 'application'
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// Detect platform for native JavaFX dependencies
+def osName = org.gradle.internal.os.OperatingSystem.current()
+def platform = osName.isWindows() ? 'win' :
+               osName.isLinux()   ? 'linux' :
+               osName.isMacOsX()  ? 'mac' : ''
+
+ext {
+    javafxVersion = '21'
+    javafxModules = ['javafx-base', 'javafx-controls', 'javafx-graphics']
+}
+
+dependencies {
+    javafxModules.each {
+        implementation "org.openjfx:$it:$javafxVersion:$platform"
+    }
+}
+
+application {
+    mainClass = 'view.Main'
+}
+
+
+tasks.named('run') {
+    doFirst {
+        def javafxLibs = configurations.runtimeClasspath.files.collect { it.absolutePath }.join(File.pathSeparator)
+        jvmArgs = [
+            "--module-path", javafxLibs,
+            "--add-modules", "javafx.controls,javafx.graphics"
+        ]
+    }
+}
