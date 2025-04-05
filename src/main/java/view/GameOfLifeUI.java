@@ -59,11 +59,15 @@ public class GameOfLifeUI extends Application {
         Button startButton = new Button("Start");
         startButton.setOnAction(e -> startGameLoop());
 
-        // Center the button using an HBox
-        HBox buttonContainer = new HBox(startButton);
+        // Create a Restart button
+        Button restartButton = new Button("Restart");
+        restartButton.setOnAction(e -> restartGame());
+
+        // Center the buttons using an HBox
+        HBox buttonContainer = new HBox(10, startButton, restartButton); // Add spacing between buttons
         buttonContainer.setAlignment(Pos.CENTER);
 
-        // Layout with the grid and button
+        // Layout with the grid and buttons
         BorderPane root = new BorderPane();
         root.setCenter(gridPane);
         root.setBottom(buttonContainer);
@@ -86,6 +90,17 @@ public class GameOfLifeUI extends Application {
             timeline.setCycleCount(Timeline.INDEFINITE);
         }
         timeline.play();
+    }
+
+    /**
+     * Restarts the game by resetting the grid and stopping the simulation.
+     */
+    private void restartGame() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+        controller.resetGrid(); // Reset the grid in the controller
+        updateGrid(); // Update the UI to reflect the reset grid
     }
 
     /**
