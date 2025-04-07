@@ -102,6 +102,14 @@ public class GameController {
         return count;
     }
 
+    public void resetGrid() {
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[row].length; col++) {
+                grid[row][col].setAlive(false); // Reset all cells to dead
+            }
+        }
+    }
+
     /**
      * Checks if the specified position is within the bounds of the grid.
      * @param row Row index to check.
